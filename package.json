@@ -1,12 +1,12 @@
 {
-  "name": "qr-printer-client",
-  "version": "0.1.0",
+  "name": "listing-scraper",
+  "version": "1.0.0",
   "private": true,
   "main": "public/electron.js",
-  "author": "Standard Computing",
+  "author": "Bucket Pixel Inc",
   "homepage": "./",
   "build": {
-    "appId": "com.sc.qr-printer",
+    "appId": "com.bp.listing-scraper",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -16,13 +16,21 @@
     }
   },
   "dependencies": {
+    "@ant-design/colors": "^4.0.5",
+    "@ant-design/icons": "^4.2.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "antd": "^4.7.3",
     "electron-is-dev": "^1.1.0",
+    "electron-reload": "^1.5.0",
+    "exceljs": "^4.2.0",
+    "file-saver": "^2.0.2",
+    "jquery": "^3.5.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0"
+    "react-scripts": "3.3.0",
+    "react-uuid": "^1.0.2"
   },
   "scripts": {
     "start": "concurrently \"BROWSER=none yarn start-react\" \"wait-on http://localhost:3000 && electron .\"",

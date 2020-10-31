@@ -1,0 +1,103 @@
+@import url('../../Assets/css/bootstrap.css');
+@import url('../../Assets/css/bootstrap-extended.css');
+@import '~antd/dist/antd.css';
+
+body {
+  background-color: #f4f4f4;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+/* ADDITIONAL HELPERS */
+
+.pointer {
+  cursor: pointer !important;
+}
+
+.full-height {
+  height: 100% !important;
+}
+
+.w-auto {
+  width: auto !important;
+}
+
+.p-y-5 {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.p-x-4 {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.p-l-5 {
+  padding-left: 5px !important;
+}
+
+.p-r-5 {
+  padding-right: 5px !important;
+}
+
+.m-l-5 {
+  margin-left: 5px !important;
+}
+
+.m-r-5 {
+  margin-right: 5px !important;
+}
+
+.m-b-5 {
+  margin-bottom: 5px !important;
+}
+
+.m-b-10 {
+  margin-bottom: 10px !important;
+}
+
+.m-t-5 {
+  margin-top: 5px !important;
+}
+
+.m-t-10 {
+  margin-top: 10px !important;
+}
+
+.p-t-25 {
+  padding-top: 25px !important;
+}
+
+.f-s-20 {
+  font-size: 20px !important;
+}
+
+.f-s-8 {
+  font-size: 8px !important;
+}
+
+.f-s-10 {
+  font-size: 10px !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.w-85 {
+  width: 85% !important;
+}
+
+.w-75 {
+  width: 75% !important;
+}
+
+.w-50 {
+  width: 50% !important;
+}
+
+.border-1 {
+  border: 1px solid #d9d9d9 !important;
+}
+
+/* END OF ADDITIONAL HELPERS */
