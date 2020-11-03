@@ -9,18 +9,27 @@ import { Table, Empty, Row, Col, Button } from 'antd'
 import { FileExcelOutlined } from '@ant-design/icons'
 
 const headers = [
+  { label: 'ASIN', value: 'asin' },
   { label: 'Product Title', value: 'title' },
-  { label: 'Description', value: 'description' },
+  { label: 'Product Title (Short)', value: 'shortTitle' },
+  { label: 'Description (HTML)', value: 'description' },
   { label: 'Description (Pretty)', value: 'prettyDescription' },
   { label: 'image 1', value: 'image1' },
   { label: 'image 2', value: 'image2' },
   { label: 'image 3', value: 'image3' }
 ]
 const TableComponent = props => {
-  const { listings } = props
+  const { listings, loading } = props
 
   const [state] = useState({
     columns: [
+      {
+        title: 'ASIN',
+        key: 'asin',
+        align: 'center',
+        className: 'pointer',
+        render: l => l.asin
+      },
       {
         title: 'Title',
         key: 'title',
@@ -107,6 +116,7 @@ const TableComponent = props => {
           <Button
             shape="circle"
             type="dashed"
+            disabled={loading}
             icon={<FileExcelOutlined />}
             onClick={exportToExcel}
           />

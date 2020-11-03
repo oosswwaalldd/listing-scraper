@@ -85,15 +85,9 @@ const scrape = url => {
 }
 
 /**
- * Scraping
+ * Amazon Key
  */
-ipcMain.on('scrape', async (_, { url }) => {
-  try {
-    console.log(`Url to Scrape -> ${url}`)
-    const html = await scrape(url)
-    console.log('Chars received (HTML) -> ', html.length)
-    mainWindow.send('html', html)
-  } catch ({ message }) {
-    console.log(`Error: ${message}`)
-  }
+
+ipcMain.on('amz-key', e => {
+  e.returnValue = '94055C1013EE4601B34DE67DE34960C5'
 })
