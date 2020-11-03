@@ -38,9 +38,19 @@ const Default = () => {
     return desc
   }
 
+  const buildShortTitle = title => {
+    const _title = title ? title.trim() : ''
+    if (!_title || (_title && _title.length <= 80)) return ''
+    return _title
+      .trim()
+      .substring(0, 80)
+      .trim()
+  }
+
   const parseListing = html => {
     const listing = $(html)
     const title = listing.find('#productTitle').text()
+    const titleShort = buildShortTitle(title)
     let description1 = listing
       .find('#productDescription')
       .find('script')
@@ -63,6 +73,7 @@ const Default = () => {
     return {
       id: uuid(),
       title: title.trim() || '--',
+      titleShort: titleShort.trim() || '--',
       description: htmlDescription,
       prettyDescription,
       image1: images.length > 0 ? images[0] : '',

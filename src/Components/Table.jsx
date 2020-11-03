@@ -10,6 +10,7 @@ import { FileExcelOutlined } from '@ant-design/icons'
 
 const headers = [
   { label: 'Product Title', value: 'title' },
+  { label: 'Product Title (Short)', value: 'titleShort' },
   { label: 'Description', value: 'description' },
   { label: 'Description (Pretty)', value: 'prettyDescription' },
   { label: 'image 1', value: 'image1' },
@@ -27,6 +28,13 @@ const TableComponent = props => {
         align: 'center',
         className: 'pointer',
         render: l => l.title
+      },
+      {
+        title: 'Title (Short)',
+        key: 'titleShort',
+        align: 'center',
+        className: 'pointer',
+        render: l => l.titleShort
       },
       {
         title: 'Description',
