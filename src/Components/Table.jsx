@@ -45,7 +45,7 @@ const TableComponent = props => {
         render: l => l.titleShort
       },
       {
-        title: 'Description',
+        title: 'Description (HTML)',
         key: 'description',
         align: 'center',
         className: 'pointer',

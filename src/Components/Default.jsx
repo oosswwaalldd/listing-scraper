@@ -17,10 +17,9 @@ import {
   Radio,
   Button
 } from 'antd'
-import { SearchOutlined } from '@ant-design/icons'
+import { SearchOutlined, SettingOutlined } from '@ant-design/icons'
 import Table from './Table'
-
-const { ipcRenderer: electron } = window.require('electron')
+import Options from './Options'
 
 const Default = () => {
   const { Content } = Layout
@@ -30,16 +29,12 @@ const Default = () => {
     loading: false,
     creditsUsed: 0,
     creditsRemaining: 0,
-    amzApiKey: null
+    amzApiKey: null,
+    showOptions: false
   })
 
   useEffect(() => {
-    ;(async () => {
-      const key = await electron.sendSync('amz-key')
-      if (key.length === 0)
-        return message.error('Error trying to get Amazon Rainforest API')
-      setState(s => ({ ...s, amzApiKey: key }))
-    })()
+    if (!state.amzApiKey) setState(s => ({ ...s, showOptions: true }))
   }, [])
 
   /**
@@ -153,10 +148,17 @@ const Default = () => {
     creditsUsed,
     creditsRemaining,
     asinCount,
-    amzApiKey
+    amzApiKey,
+    showOptions
   } = state
   return (
     <Layout>
+      <Options
+        amzApiKey={amzApiKey}
+        visible={showOptions}
+        setAmzKey={key => setState(s => ({ ...s, amzApiKey: key }))}
+        close={() => setState(s => ({ ...s, showOptions: false }))}
+      />
       <Content style={{ height: '100%' }}>
         <Card>
           <Form
@@ -179,9 +181,13 @@ const Default = () => {
                   ]}
                 >
                   <Input.TextArea
-                    disabled={loading}
+                    disabled={loading || !amzApiKey}
                     autoSize
-                    placeholder="ASINS (one per line)"
+                    placeholder={
+                      amzApiKey
+                        ? 'ASINS (one per line)'
+                        : 'Amazon Rainforest API Key is REQUIRED!'
+                    }
                     allowClear
                     onChange={({ target: { value } }) =>
                       setState(s => ({
@@ -200,12 +206,13 @@ const Default = () => {
                 <Form.Item name="source" className="mb-0">
                   <Radio.Group>
                     <Radio value="amazon">
-                      Amazon (credits {creditsUsed}/{creditsRemaining})
+                      Amazon (credits {creditsUsed}/
+                      {creditsUsed + creditsRemaining})
                     </Radio>
                   </Radio.Group>
                 </Form.Item>
               </Col>
-              <Col span={8} className="align-items-center d-flex">
+              <Col span={6} className="align-items-center d-flex">
                 <Button
                   loading={loading}
                   type="primary"
@@ -214,6 +221,12 @@ const Default = () => {
                 >
                   Scrape
                 </Button>
+              </Col>
+              <Col span={2} className="align-items-center d-flex">
+                <SettingOutlined
+                  style={{ fontSize: 30 }}
+                  onClick={() => setState(s => ({ ...s, showOptions: true }))}
+                />
               </Col>
             </Row>
             <Row>

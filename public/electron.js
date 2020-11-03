@@ -83,11 +83,3 @@ const scrape = url => {
     }
   })
 }
-
-/**
- * Amazon Key
- */
-
-ipcMain.on('amz-key', e => {
-  e.returnValue = '94055C1013EE4601B34DE67DE34960C5'
-})
