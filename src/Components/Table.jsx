@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Libs
 import Excel from 'exceljs'
@@ -12,17 +12,23 @@ const headers = [
   { label: 'ASIN', value: 'asin' },
   { label: 'Product Title', value: 'title' },
   { label: 'Product Title (Short)', value: 'shortTitle' },
-  { label: 'Description (HTML)', value: 'description' },
-  { label: 'Description (Pretty)', value: 'prettyDescription' },
-  { label: 'image 1', value: 'image1' },
-  { label: 'image 2', value: 'image2' },
-  { label: 'image 3', value: 'image3' }
+  { label: 'Description', value: 'description' },
+  { label: 'Feature 1', value: 'feature1' },
+  { label: 'Feature 2', value: 'feature2' },
+  { label: 'Feature 3', value: 'feature3' },
+  { label: 'Image 1', value: 'image1' },
+  { label: 'Image 2', value: 'image2' },
+  { label: 'Image 3', value: 'image3' }
 ]
 const TableComponent = props => {
   const { listings, loading } = props
 
-  const [state] = useState({
-    columns: [
+  const [state, setState] = useState({
+    columns: []
+  })
+
+  useEffect(() => {
+    const cols = [
       {
         title: 'ASIN',
         key: 'asin',
@@ -45,24 +51,11 @@ const TableComponent = props => {
         render: l => l.titleShort
       },
       {
-        title: 'Description (HTML)',
+        title: 'Description',
         key: 'description',
         align: 'center',
         className: 'pointer',
         render: l => l.description
-      },
-      {
-        title: 'Description (Pretty)',
-        key: 'description',
-        align: 'left',
-        className: 'pointer',
-        render: l => (
-          <span
-            dangerouslySetInnerHTML={{
-              __html: l.description
-            }}
-          />
-        )
       },
       {
         title: 'Image 1',
@@ -84,9 +77,31 @@ const TableComponent = props => {
         align: 'left',
         className: 'pointer',
         render: l => l.image3
+      },
+      {
+        title: 'Feature 1',
+        key: 'feature1',
+        align: 'left',
+        className: 'pointer',
+        render: l => l.feature1
+      },
+      {
+        title: 'Feature 2',
+        key: 'feature2',
+        align: 'left',
+        className: 'pointer',
+        render: l => l.feature2
+      },
+      {
+        title: 'Feature 3',
+        key: 'feature3',
+        align: 'left',
+        className: 'pointer',
+        render: l => l.feature3
       }
     ]
-  })
+    setState(s => ({ ...s, columns: cols }))
+  }, [listings])
 
   /**
    * Exports data

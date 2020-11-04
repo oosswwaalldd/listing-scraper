@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 
 // Libs
 import axios from 'axios'
-import uuid from 'react-uuid'
+import uuid from 'react-uuid' // Libs
+import $ from 'jquery'
 
 // Components
 import {
@@ -71,15 +72,18 @@ const Default = () => {
           api_key: amzApiKey,
           type: 'product',
           amazon_domain: 'amazon.com',
-          asin: asin.trim()
+          asin: asin.trim(),
+          include_html: true
         }
         const {
           status,
           data: {
+            html,
             request_info: { credits_used, credits_remaining } = {},
             product: {
               asin: asinData,
               title,
+              description,
               feature_bullets = [],
               images = []
             } = {},
@@ -105,11 +109,24 @@ const Default = () => {
           asin: asinData,
           title,
           shortTitle: buildShortTitle(title),
-          description: feature_bullets.join('\n'),
-          image1: images.length > 0 ? images[0].link : '',
-          image2: images.length > 1 ? images[1].link : '',
-          image3: images.length > 2 ? images[3].link : ''
+          description: getDescription(description, html)
         }
+
+        // Images
+        let index = 1
+        for (const image of images.splice(0, 3)) {
+          item[`image${index}`] = image.link
+          index += 1
+        }
+
+        // Feature bullets
+        index = 1
+        for (const bullet of feature_bullets.splice(0, 3)) {
+          item[`feature${index}`] = bullet
+          index += 1
+        }
+        console.log(item)
+
         setState(s => ({
           ...s,
           listings: [...s.listings, item],
@@ -124,13 +141,24 @@ const Default = () => {
         key: 'scraping',
         duration: 2
       })
-    } catch ({ msg }) {
+    } catch ({ message: msg }) {
+      const _msg = `Error on scrape() -> "${msg}"`
+      console.log(_msg)
       message.error({
-        content: `Error on scrape() -> "${msg}"`,
+        content: _msg,
         key: 'scraping',
         duration: 2
       })
     }
+  }
+
+  const getDescription = (description, html) => {
+    if (description) return description
+    const _description = $(html)
+      .find('#productDescription')
+      .find('script')
+      .remove()
+    return _description.find('#productDescription').text()
   }
 
   const buildShortTitle = title => {
