@@ -87,17 +87,20 @@ const Default = () => {
               feature_bullets = [],
               images = []
             } = {},
-            request_info: { success } = {}
+            request_info: { success, message: apiMessage } = {}
           } = {}
         } = await axios.get('https://api.rainforestapi.com/request', {
           params
         })
         if (status !== 200)
-          message.error(
-            `Error trying to get ASIN: ${asin} (Status Code = ${status})`
+          throw new Error(
+            `Error trying to get ASIN: ${asin} (Status Code = ${status}, Message: ${apiMessage})`
           )
+
         if (!success)
-          message.error(`Error trying to get ASIN: ${asin} (Success = false)`)
+          throw new Error(
+            `Error trying to get ASIN: ${asin} (Success = false, Message: ${apiMessage})`
+          )
 
         message.success({
           content: `ASIN: ${asin} done!`,
@@ -141,9 +144,11 @@ const Default = () => {
         key: 'scraping',
         duration: 2
       })
-    } catch ({ message: msg }) {
+    } catch (error) {
+      const { message: msg } = error
+      console.log(error)
+      setState(s => ({ ...s, loading: false }))
       const _msg = `Error on scrape() -> "${msg}"`
-      console.log(_msg)
       message.error({
         content: _msg,
         key: 'scraping',
@@ -153,12 +158,17 @@ const Default = () => {
   }
 
   const getDescription = (description, html) => {
-    if (description) return description
+    if (description)
+      return description.replace(/PRODUCT DESCRIPTION/i, '').trim()
     const _description = $(html)
       .find('#productDescription')
       .find('script')
       .remove()
-    return _description.find('#productDescription').text()
+    return _description
+      .find('#productDescription')
+      .text()
+      .replace(/PRODUCT DESCRIPTION/i, '')
+      .trim()
   }
 
   const buildShortTitle = title => {
@@ -259,7 +269,7 @@ const Default = () => {
             </Row>
             <Row>
               <Col span={24}>
-                <Table listings={listings} loading={loading} />
+                <Table listings={listings} />
               </Col>
             </Row>
           </Form>

@@ -5,7 +5,7 @@ import Excel from 'exceljs'
 import saveAs from 'file-saver'
 
 // Components
-import { Table, Empty, Row, Col, Button } from 'antd'
+import { Table, Empty, Row, Col, Button, Popconfirm } from 'antd'
 import { FileExcelOutlined } from '@ant-design/icons'
 
 const headers = [
@@ -21,7 +21,7 @@ const headers = [
   { label: 'Image 3', value: 'image3' }
 ]
 const TableComponent = props => {
-  const { listings, loading } = props
+  const { listings } = props
 
   const [state, setState] = useState({
     columns: []
@@ -135,13 +135,13 @@ const TableComponent = props => {
           {listings.length} listings in the table
         </Col>
         <Col span={12} className="font-size-large text-right m-b-5">
-          <Button
-            shape="circle"
-            type="dashed"
-            disabled={loading}
-            icon={<FileExcelOutlined />}
-            onClick={exportToExcel}
-          />
+          <Popconfirm
+            placement="left"
+            title={`${listings.length} listings will be exported. Continue?`}
+            onConfirm={exportToExcel}
+          >
+            <Button shape="circle" type="dashed" icon={<FileExcelOutlined />} />
+          </Popconfirm>
         </Col>
       </Row>
       <Table
